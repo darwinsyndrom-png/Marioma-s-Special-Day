@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marioma's Special Day</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pink-light: #fce4ec;
+            --pink-accent: #f48fb1;
+            --burgundy: #880e4f;
+            --burgundy-dark: #560027;
+            --white: #ffffff;
+            --shadow: 0 10px 25px rgba(136, 14, 79, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--pink-light) 0%, #f8bbd0 100%);
+            color: var(--burgundy-dark);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        /* Password Overlay Screen */
+        #password-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #fff0f3 0%, var(--pink-light) 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+            padding: 20px;
+        }
+
+        .pass-card {
+            background: var(--white);
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            border: 2px solid rgba(244, 143, 177, 0.3);
+        }
+
+        .pass-card h2 {
+            color: var(--burgundy);
+            margin-bottom: 20px;
+            font-weight: 500;
+            font-size: 1.5rem;
+        }
+
+        .pass-input {
+            width: 100%;
+            padding: 12px 20px;
+            border: 2px solid var(--pink-accent);
+            border-radius: 12px;
+            font-size: 1.1rem;
+            text-align: center;
+            outline: none;
+            color: var(--burgundy-dark);
+            background: #fffafa;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .pass-input:focus {
+            border-color: var(--burgundy);
+            box-shadow: 0 0 8px rgba(136, 14, 79, 0.2);
+        }
+
+        /* 3D Button Style */
+        .btn-3d {
+            background: linear-gradient(to bottom, var(--burgundy), var(--burgundy-dark));
+            color: var(--white);
+            border: none;
+            padding: 12px 30px;
+            font-size: 1rem;
+            font-weight: 500;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #3b0018, 0 10px 15px rgba(0,0,0,0.2);
+            transition: all 0.1s ease;
+            width: 100%;
+        }
+
+        .btn-3d:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #3b0018, 0 5px 8px rgba(0,0,0,0.2);
+        }
+
+        #error-msg {
+            margin-top: 15px;
+            color: var(--burgundy);
+            font-size: 0.95rem;
+            min-height: 24px;
+            font-weight: 400;
+            line-height: 1.4;
+        }
+
+        /* Main Content Screen */
+        #main-content {
+            display: none;
+            opacity: 0;
+            width: 100%;
+            max-width: 650px;
+            padding: 30px 20px;
+            margin: auto;
+            transition: opacity 1s ease;
+        }
+
+        .main-card {
+            background: var(--white);
+            border-radius: 25px;
+            box-shadow: var(--shadow);
+            padding: 40px 30px;
+            text-align: center;
+            border: 2px solid rgba(244, 143, 177, 0.4);
+            position: relative;
+        }
+
+        /* Top Headings */
+        .top-subtitle {
+            font-size: 1.1rem;
+            color: var(--burgundy);
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .main-wish {
+            font-size: 1.5rem;
+            color: var(--burgundy-dark);
+            font-weight: 600;
+            margin-bottom: 25px;
+        }
+
+        /* Image and Title Section */
+        .image-container {
+            width: 160px;
+            height: 160px;
+            margin: 0 auto 20px auto;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(136, 14, 79, 0.2);
+            border: 4px solid var(--pink-accent);
+        }
+
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .special-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 3.5rem;
+            color: var(--burgundy);
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+        }
+
+        /* Music Player Style */
+        .music-player {
+            display: flex;
+            align-items: center;
+            background: #fff0f3;
+            padding: 12px 20px;
+            border-radius: 50px;
+            margin-bottom: 30px;
+            border: 1px solid var(--pink-accent);
+            justify-content: space-between;
+        }
+
+        .record-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .vinyl-record {
+            width: 45px;
+            height: 45px;
+            background: #111;
+            border-radius: 50%;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            border: 3px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: spin 3s linear infinite;
+        }
+
+        .vinyl-record::before {
+            content: '';
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            background: var(--pink-accent);
+            border-radius: 50%;
+            border: 2px solid #fff;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .song-info {
+            text-align: left;
+        }
+
+        .song-title {
+            font-weight: 600;
+            color: var(--burgundy);
+            font-size: 0.95rem;
+        }
+
+        .song-artist {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        /* Romantic Letter Box */
+        .letter-box {
+            background: #fff9fa;
+            border: 1px dashed var(--pink-accent);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: right;
+            direction: rtl;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: #4a2e35;
+            white-space: pre-line;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.02);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Password Screen -->
+    <div id="password-screen">
+        <div class="pass-card">
+            <h2>Enter Password ✨</h2>
+            <input type="password" id="pass-input" class="pass-input" placeholder="••••" autocomplete="current-password">
+            <button class="btn-3d" onclick="checkPassword()">Open Heart 💖</button>
+            <div id="error-msg"></div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content">
+        <div class="main-card">
+            <div class="top-subtitle">Hope your day is as amazing as you are</div>
+            <div class="main-wish">Make a wish ✨</div>
+
+            <div class="image-container">
+                <img src="1.jpeg" alt="Marioma">
+            </div>
+
+            <h1 class="special-title">Marioma's Special Day</h1>
+
+            <!-- Music Player -->
+            <div class="music-player">
+                <div class="record-wrapper">
+                    <div class="vinyl-record"></div>
+                    <div class="song-info">
+                        <div class="song-title">Kol Sana</div>
+                        <div class="song-artist">Ramy Sabry</div>
+                    </div>
+                </div>
+                <audio id="bg-music" loop>
+                    <source src="Kol Sana.mp3" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+            </div>
+
+            <!-- Romantic Message -->
+            <div class="letter-box">كل سنه وانتي طيبه يامريومههه، ان شاء الله تكون سنه سعيده عليكي وتفضلي مبسوطه ديما...
+احنا اه لسه عارفين بعض من اسبوعين تلاته بس بجد الفتره دي كانت كفايه تعرفني قد اي انتي عسوله وجميله ومن أنضف الناس الي عرفتها ف حياتي، وبجد مبسوط جدا اني قابلتك وعامةً انتي ماشاء الله فيكي قبول رهيب واي حد يعرفك أكيد قالك حاجه زي دي، ودي حاجه كبيره جدا، المهم اني حبيت اقولك هابي بيرث داي بس بطريقتي بقا👀
+فرحتك امبارح كانت بالدنيا والله وكان شكلك عسول اوي كنتي تحفه فنيه حرفيا 😍 ف بلاش نكد تاني بقا طز ف اي حاجه عشان كان يوم كئيب جدا وانتي متنكده 😂.
+وشيلي بقا فكرة انك متكمليش دي من دماغك عشان مفيش الهبل دا ومش هيحصل🤨.
+Happy birthday ya Mariomaaaa😍🎀.</div>
+        </div>
+    </div>
+
+    <script>
+        let attempts = 0;
+
+        function checkPassword() {
+            const input = document.getElementById('pass-input').value.trim();
+            const errorMsg = document.getElementById('error-msg');
+            const passScreen = document.getElementById('password-screen');
+            const mainContent = document.getElementById('main-content');
+            const bgMusic = document.getElementById('bg-music');
+
+            if (input === '1810') {
+                passScreen.style.opacity = '0';
+                setTimeout(() => {
+                    passScreen.style.visibility = 'hidden';
+                    mainContent.style.display = 'block';
+                    setTimeout(() => {
+                        mainContent.style.opacity = '1';
+                    }, 50);
+                }, 600);
+
+                // Play music immediately
+                bgMusic.play().catch(error => {
+                    console.log("Audio autoplay was prevented:", error);
+                });
+
+            } else {
+                attempts++;
+                if (attempts === 1) {
+                    errorMsg.innerText = "لا لا مكنتش متوقعها منك دي... الباسورد 0000";
+                } else if (attempts === 2) {
+                    errorMsg.innerText = "طب جربي 1111 كدا";
+                } else {
+                    errorMsg.innerText = "لا خلاص صعبتي عليا خدي 1810";
+                }
+            }
+        }
+
+        // Allow pressing Enter key to submit password
+        document.getElementById('pass-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+    </script>
+</body>
+</html>
